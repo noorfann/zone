@@ -147,11 +147,14 @@ extension GoalCard {
                 .font(.headline)
                 .padding(.bottom, 4)
             ForEach(0..<6) {index in
-                ListRowView(item: TodoModel(id: "\(index)", goalID: "1", title: "Todo \(index)", isCompleted: true))
-                    .onTapGesture {
-                        withAnimation(.linear) {
+                VStack {
+                    ListRowView(item: TodoModel(id: "\(index)", goalID: "1", title: "Todo \(index)", isCompleted: true))
+                        .onTapGesture {
+                            withAnimation(.linear) {
+                            }
                         }
-                    }
+                    Divider()
+                }
             }
         }
     }

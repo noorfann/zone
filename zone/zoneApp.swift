@@ -5,14 +5,14 @@
 //  Created by Zulfikar Noorfan on 20/05/25.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct zoneApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Item.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,7 +25,9 @@ struct zoneApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack { // Add NavigationStack here
+                HomeView()
+            }
         }
         .modelContainer(sharedModelContainer)
     }
