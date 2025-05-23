@@ -12,7 +12,9 @@ import SwiftUI
 struct zoneApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self
+            GoalModel.self,
+            TodoModel.self,
+            TimeLogModel.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,8 +27,8 @@ struct zoneApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack { // Add NavigationStack here
-                HomeView()
+            NavigationStack {
+                HomeView(modelContext: sharedModelContainer.mainContext)
             }
         }
         .modelContainer(sharedModelContainer)

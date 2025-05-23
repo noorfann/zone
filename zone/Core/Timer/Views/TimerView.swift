@@ -10,12 +10,26 @@ import SwiftUI
 struct TimerView: View {
     @StateObject var viewModel = TimerViewModel()
     let activeGoal: GoalModel  // Property to receive the goal from HomeView
+    
+    // Add state for expanded card (if needed in this view)
+    @State private var expandedSection: ExpandedSection? = nil
 
     var body: some View {
         VStack(spacing: 20) {
             // Goal Card Display using the passed 'activeGoal'
-            GoalCard(goal: activeGoal)
-                .padding(.horizontal)  // Add some horizontal padding if needed
+            GoalCard(
+                goal: activeGoal,
+                onPlayTapped: {},
+                expandedGoalId: activeGoal.id, // This is now correct as String
+                expandedSection: expandedSection,
+                onSectionToggle: { section in
+                    // Toggle section expansion
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                        expandedSection = expandedSection == section ? nil : section
+                    }
+                }, onDeleteTapped: {}
+            )
+            .padding(.horizontal)  // Add some horizontal padding if needed
 
             // Timer Display
             HStack(spacing: 10) {  // Increased spacing between elements

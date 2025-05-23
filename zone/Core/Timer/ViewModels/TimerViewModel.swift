@@ -5,33 +5,16 @@
 //  Created by Zulfikar Noorfan on 21/05/25.
 //
 
-import Foundation
 import Combine
-
-enum TimerMode {
-    case work
-    case shortBreak
-    case longBreak
-    case idle
-    case custom
-
-    var displayName: String {
-        switch self {
-        case .work: return "Work"
-        case .shortBreak: return "Short Break"
-        case .longBreak: return "Long Break"
-        case .custom: return "Custom"
-        case .idle: return "Idle"
-        }
-    }
-}
+import Foundation
+import SwiftUI
 
 class TimerViewModel: ObservableObject {
 
     @Published var remainingTime: TimeInterval = 0
-    @Published var timerMode: TimerMode = .work // Default to work
+    @Published var timerMode: TimerMode = .work  // Default to work
     @Published var isActive: Bool = false
-    @Published var customDuration: TimeInterval = 10 * 60 // Default custom duration
+    @Published var customDuration: TimeInterval = 10 * 60  // Default custom duration
 
     // Durations in seconds
     var workDuration: TimeInterval = 25 * 60
@@ -73,12 +56,12 @@ class TimerViewModel: ObservableObject {
             case .longBreak:
                 remainingTime = longBreakDuration
             case .custom:
-                remainingTime = customDuration // Ensure customDuration is set before starting
+                remainingTime = customDuration  // Ensure customDuration is set before starting
             case .idle:
-                return // Do nothing if idle
+                return  // Do nothing if idle
             }
         }
-        
+
         updateFlipViewModels(time: remainingTime)
 
         timer = Timer.publish(every: 1, on: .main, in: .default)
@@ -89,7 +72,7 @@ class TimerViewModel: ObservableObject {
                     self.remainingTime -= 1
                     self.updateFlipViewModels(time: self.remainingTime)
                 } else {
-                    self.pauseTimer() // Or handle session completion
+                    self.pauseTimer()  // Or handle session completion
                     // TODO: Implement logic for what happens when timer finishes (e.g., switch to break)
                 }
             }
@@ -112,7 +95,7 @@ class TimerViewModel: ObservableObject {
         case .longBreak:
             remainingTime = longBreakDuration
         case .custom:
-            remainingTime = customDuration // Or a default custom duration
+            remainingTime = customDuration  // Or a default custom duration
         case .idle:
             remainingTime = 0
         }
@@ -127,13 +110,13 @@ class TimerViewModel: ObservableObject {
         updateFlipViewModels(time: remainingTime)
         // Add any other logic for ending a session, like preparing for the next one or going to an idle state.
     }
-    
+
     private func updateFlipViewModels(time: TimeInterval) {
         let minutes = Int(time) / 60
         let seconds = Int(time) % 60
-        
+
         let timeString = String(format: "%02d%02d", minutes, seconds)
-        
+
         zip(timeString, flipViewModels).forEach { digitChar, viewModel in
             viewModel.text = "\(digitChar)"
         }

@@ -44,6 +44,7 @@ struct ProgressIndicator: View {
 struct CircularProgress: View {
     let percentage: Double
     let lineWidth: CGFloat?
+    var animationDuration: Double = 1.0  // Default duration
     
     private var strokeColor: Color {
         let index = Int(ceil(percentage / 25.0))
@@ -73,7 +74,7 @@ struct CircularProgress: View {
                     )
                 )
                 .rotationEffect(.degrees(-90))
-                .animation(.easeOut, value: percentage)
+                .animation(.easeOut(duration: animationDuration), value: percentage)  // Use the custom duration
         }
     }
 }
